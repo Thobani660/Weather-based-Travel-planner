@@ -5,6 +5,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url('../res/Weather-Proof-Your-Travel-Plans-featured.webp');
+  background-size: cover;   /* Ensures the image covers the entire viewport */
+  background-position: center center;  /* Centers the image */
+  background-repeat: no-repeat;  /* Prevents image from repeating */
+  margin: 0;  /* Remove default margin */
+  height: 100vh;
 }
 
 code {
