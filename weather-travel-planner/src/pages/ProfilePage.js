@@ -184,67 +184,73 @@ const ProfileUser = () => {
         </div>
       )}
 
-<main style={{ padding: '24px', display: 'flex', justifyContent: 'center' }}>
-      <div style={{ maxWidth: '1200px', width: '100%', padding: '24px' }}>
-        {/* Tabs Section */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '16px',
-            marginBottom: '16px',
-          }}
-        >
-          <button
+      <main style={{ padding: '24px', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ maxWidth: '1200px', width: '100%', padding: '24px' }}>
+          {/* Tabs Section */}
+          <div
             style={{
-              ...buttonStyle,
-              ...(activeTab === 'favourites' ? activeButtonStyle : inactiveButtonStyle),
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '16px',
+              marginBottom: '16px',
             }}
-            onClick={() => setActiveTab('favourites')}
           >
-            Favourite
-          </button>
-          <button
-            style={{
-              ...buttonStyle,
-              ...(activeTab === 'bookingHistory' ? activeButtonStyle : inactiveButtonStyle),
-            }}
-            onClick={() => setActiveTab('bookingHistory')}
-          >
-            Booking History
-          </button>
-          <button
-            style={{
-              ...buttonStyle,
-              ...(activeTab === 'booked' ? activeButtonStyle : inactiveButtonStyle),
-            }}
-            onClick={() => setActiveTab('booked')}
-          >
-            Booked
-          </button>
-        </div>
+            <button
+              style={{
+                ...buttonStyle,
+                ...(activeTab === 'favourites' ? activeButtonStyle : inactiveButtonStyle),
+              }}
+              onClick={() => setActiveTab('favourites')}
+            >
+              Favourite
+            </button>
+            <button
+              style={{
+                ...buttonStyle,
+                ...(activeTab === 'bookingHistory' ? activeButtonStyle : inactiveButtonStyle),
+              }}
+              onClick={() => setActiveTab('bookingHistory')}
+            >
+              Booking History
+            </button>
+            <button
+              style={{
+                ...buttonStyle,
+                ...(activeTab === 'booked' ? activeButtonStyle : inactiveButtonStyle),
+              }}
+              onClick={() => setActiveTab('booked')}
+            >
+              Booked
+            </button>
+          </div>
 
-        {/* Content Section */}
-        <div
-          style={{
-            padding: '24px',
-            borderRadius: '8px',
-            backgroundColor: 'white',
-            minHeight: '200px',
-            border: '1px solid #e5e7eb',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          {activeTab === 'favourites' && <FavoritesPage />}
-          {/* {activeTab === 'bookingHistory' && <BookingHistory />} */}
-          {/* {activeTab === 'booked' && <Booked />} */}
+          {/* Content Section */}
+          <div
+            style={{
+              padding: '24px',
+              borderRadius: '8px',
+              backgroundColor: 'white',
+              minHeight: '200px',
+              border: '1px solid #e5e7eb',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
+          >
+            {activeTab === 'favourites' && (
+              <div style={{ width: '100%', maxWidth: '1000px' }}>
+                <FavoritesPage />
+              </div>
+            )}
+            {/* {activeTab === 'bookingHistory' && <BookingHistory />} */}
+            {/* {activeTab === 'booked' && <Booked />} */}
+          </div>
         </div>
-      </div>
-    </main>
-  
+      </main>
     </div>
   );
-
 };
 
 export default ProfileUser;

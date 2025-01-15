@@ -1,29 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { db } from "../firebase";
-import { collection, addDoc } from 'firebase/firestore';
-import { Navigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-
-const activitiesByWeather = {
-  Clear: ["Go for a walk", "Have a picnic", "Stargazing"],
-  Clouds: ["Visit a museum", "Read a book", "Go to a café"],
-  Rain: ["Watch a movie", "Play indoor games", "Do some cooking"],
-  Snow: ["Build a snowman", "Go skiing", "Have hot cocoa"],
-  Thunderstorm: ["Stay indoors", "Watch lightning from a safe spot", "Catch up on shows"],
-  Drizzle: ["Take a short walk with an umbrella", "Visit a nearby café"],
-  Mist: ["Go for a relaxing walk", "Take photos of the misty scenery"],
-};
+import { collection, addDoc } from "firebase/firestore";
 
 const SearchBar = () => {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
   const [favorites, setFavorites] = useState([]);
-  const navigate = useNavigate();
 
-
-  const searchLocation = async (city) => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=0d60273acd621b755f1317978b6f426a`;
+  // Fetch weather data by city name or coordinates
+  const fetchWeather = async (url) => {
     try {
       const response = await axios.get(url);
       setData(response.data);
@@ -32,6 +18,19 @@ const SearchBar = () => {
     }
   };
 
+  // Get weather by city name
+  const searchLocation = (city) => {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=0d60273acd621b755f1317978b6f426a`;
+    fetchWeather(url);
+  };
+
+  // Get weather by coordinates
+  const getWeatherByCoordinates = (lat, lon) => {
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=0d60273acd621b755f1317978b6f426a`;
+    fetchWeather(url);
+  };
+
+  // Handle user input
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       searchLocation(location);
@@ -39,31 +38,43 @@ const SearchBar = () => {
     }
   };
 
-//   const addFavorite = () => {
-//     if (data.name && !favorites.some((fav) => fav.name === data.name)) {
-//       setFavorites([...favorites, data]);
-//     }
-//   };
+  // Fetch user's current location weather on mount
+  useEffect(() => {
+    const fetchCurrentLocationWeather = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            getWeatherByCoordinates(latitude, longitude);
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+            setData({ name: "Location access denied", main: {}, weather: [] });
+          }
+        );
+      } else {
+        console.error("Geolocation not supported by this browser.");
+      }
+    };
+
+    fetchCurrentLocationWeather();
+  }, []);
 
   const addFavorite = async () => {
     try {
       if (data.name && !favorites.some((fav) => fav.name === data.name)) {
         // Add to local state
         setFavorites([...favorites, data]);
-  
+
         // Save to Firestore
-        const favoritesRef = collection(db, 'favorites'); 
+        const favoritesRef = collection(db, "favorites");
         await addDoc(favoritesRef, data);
-  
-        console.log('Favorite added to Firestore!');
+
+        console.log("Favorite added to Firestore!");
       }
     } catch (error) {
-      console.error('Error adding favorite to Firestore:', error);
+      console.error("Error adding favorite to Firestore:", error);
     }
-  };
-
-  const addToDo = async () => {
-       navigate("./toDo")
   };
 
   return (
@@ -119,9 +130,7 @@ const SearchBar = () => {
             {data.name || "Enter a city"}
           </h2>
           <h1 style={{ fontSize: "60px", margin: "10px 0" }}>
-            {data.main
-              ? `${Math.round(data.main.temp - 273.15)}°C`
-              : "N/A"}
+            {data.main ? `${Math.round(data.main.temp - 273.15)}°C` : "N/A"}
           </h1>
           <p style={{ fontSize: "20px", margin: "10px 0" }}>
             {data.weather ? data.weather[0].description : "N/A"}
@@ -159,62 +168,22 @@ const SearchBar = () => {
             <p>Wind Speed</p>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '50px' }}>
-  <button
-    onClick={addFavorite}
-    style={{
-      padding: "10px 20px",
-      fontSize: "16px",
-      color: "#fff",
-      backgroundColor: "#0072ff",
-      border: "none",
-      borderRadius: "20px",
-      cursor: "pointer",
-    }}
-  >
-    Save as Favorite
-  </button>
-
-  <button
-    onClick={addToDo}
-    style={{
-      padding: "10px 20px",
-      fontSize: "16px",
-      color: "#fff",
-      backgroundColor: "#0072ff",
-      border: "none",
-      borderRadius: "20px",
-      cursor: "pointer",
-    }}
-  >
-    Add ToDo
-  </button>
-</div>
-
-      </div>
-
-      {/* Favorite Locations */}
-      <div style={{ marginTop: "40px", textAlign: "left", width: "100%", maxWidth: "600px" }}>
-        <h3 style={{ fontSize: "28px", marginBottom: "20px" }}>Favorite Locations</h3>
-        {favorites.map((fav, index) => (
-          <div
-            key={index}
+        <div style={{ display: "flex", gap: "50px" }}>
+          <button
+            onClick={addFavorite}
             style={{
-              background: "rgba(255, 255, 255, 0.1)",
-              borderRadius: "10px",
-              padding: "10px",
-              marginBottom: "10px",
+              padding: "10px 20px",
+              fontSize: "16px",
+              color: "#fff",
+              backgroundColor: "#0072ff",
+              border: "none",
+              borderRadius: "20px",
+              cursor: "pointer",
             }}
           >
-            <h4 style={{ fontSize: "20px", margin: "0" }}>{fav.name}</h4>
-            <p style={{ fontSize: "16px", margin: "5px 0" }}>
-              {fav.weather ? fav.weather[0].description : "N/A"}
-            </p>
-            <p style={{ fontSize: "16px", margin: "5px 0" }}>
-              Activities: {activitiesByWeather[fav.weather[0]?.main]?.join(", ") || "N/A"}
-            </p>
-          </div>
-        ))}
+            Save as Favorite
+          </button>
+        </div>
       </div>
     </div>
   );

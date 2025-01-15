@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import axios from "axios";
 import { doc, setDoc } from "firebase/firestore";
-
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -36,9 +34,6 @@ export default function Register() {
       // Save user info to Firebase Firestore
       await setDoc(doc(db, "users", user.uid), userData);
 
-      // Optionally, you can still use your backend API to store this data in a separate database
-      // await axios.post("http://localhost:3000/api/register", userData);
-
       // Redirect the user to the login page after successful registration
       navigate("/SignIn");
     } catch (err) {
@@ -49,62 +44,98 @@ export default function Register() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white">
-      <div className="container max-w-md p-8 bg-white shadow-md rounded-lg mt-20 mb-20">
-        <h1 className="text-3xl font-bold mb-4 text-center text-pink-500">Sign Up</h1>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#fff" }}>
+      <div style={{ maxWidth: "600px", padding: "32px", backgroundColor: "#fff", boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", borderRadius: "8px", marginTop: "20px", marginBottom: "20px" }}>
+        <h1 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px", textAlign: "center", color: "#93c8e8" }}>Sign Up</h1>
 
         <form onSubmit={handleSubmit}>
           {/* Name Field */}
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
-              Name 
+          <div style={{ marginBottom: "16px" }}>
+            <label htmlFor="name" style={{ display: "block", color: "#4B5563", fontWeight: "bold", marginBottom: "8px" }}>
+              Name
             </label>
             <input
               type="text"
               id="name"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
+              style={{
+                width: "100%",
+                padding: "12px 16px",
+                borderRadius: "4px",
+                border: "1px solid #d1d5db",
+                color: "#4B5563",
+                fontSize: "16px",
+                outline: "none",
+                boxSizing: "border-box",
+              }}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
 
-            {/* Surname */}
-            <div className="mb-4">
-            <label htmlFor="surname" className="block text-gray-700 font-bold mb-2">
-             Surname
+          {/* Surname Field */}
+          <div style={{ marginBottom: "16px" }}>
+            <label htmlFor="surname" style={{ display: "block", color: "#4B5563", fontWeight: "bold", marginBottom: "8px" }}>
+              Surname
             </label>
             <input
               type="text"
               id="surname"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
+              style={{
+                width: "100%",
+                padding: "12px 16px",
+                borderRadius: "4px",
+                border: "1px solid #d1d5db",
+                color: "#4B5563",
+                fontSize: "16px",
+                outline: "none",
+                boxSizing: "border-box",
+              }}
               value={surname}
               onChange={(e) => setSurname(e.target.value)}
             />
           </div>
 
           {/* Email Field */}
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
+          <div style={{ marginBottom: "16px" }}>
+            <label htmlFor="email" style={{ display: "block", color: "#4B5563", fontWeight: "bold", marginBottom: "8px" }}>
               Email
             </label>
             <input
               type="email"
               id="email"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
+              style={{
+                width: "100%",
+                padding: "12px 16px",
+                borderRadius: "4px",
+                border: "1px solid #d1d5db",
+                color: "#4B5563",
+                fontSize: "16px",
+                outline: "none",
+                boxSizing: "border-box",
+              }}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
-          {/* Password */}
-          <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
+          {/* Password Field */}
+          <div style={{ marginBottom: "24px" }}>
+            <label htmlFor="password" style={{ display: "block", color: "#4B5563", fontWeight: "bold", marginBottom: "8px" }}>
               Password
             </label>
             <input
               type="password"
               id="password"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
+              style={{
+                width: "100%",
+                padding: "12px 16px",
+                borderRadius: "4px",
+                border: "1px solid #d1d5db",
+                color: "#4B5563",
+                fontSize: "16px",
+                outline: "none",
+                boxSizing: "border-box",
+              }}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -113,27 +144,34 @@ export default function Register() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded w-full"
+            style={{
+              backgroundColor: "#93c8e8",
+              color: "#fff",
+              fontWeight: "bold",
+              padding: "12px 16px",
+              borderRadius: "4px",
+              width: "100%",
+              cursor: "pointer",
+              border: "none",
+            }}
             disabled={loading}
           >
             {loading ? "Submitting..." : "Submit"}
           </button>
 
-          <p className="mt-4 text-center">
+          <p style={{ marginTop: "16px", textAlign: "center" }}>
             Already have an account?{" "}
             <button
-              onClick={() => navigate("/logIn")}
-              className="text-blue-600 underline"
+              onClick={() => navigate("/signin")}
+              style={{ color: "#3b82f6", textDecoration: "underline", background: "none", border: "none", cursor: "pointer" }}
             >
               Click here
             </button>
           </p>
 
-          {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
+          {error && <p style={{ color: "#ef4444", marginTop: "16px", textAlign: "center" }}>{error}</p>}
         </form>
       </div>
     </div>
   );
 }
-
-
