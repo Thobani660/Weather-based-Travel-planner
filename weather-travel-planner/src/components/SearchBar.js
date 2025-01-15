@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { db } from "../firebase";
+import { collection, addDoc } from 'firebase/firestore';
 
 const activitiesByWeather = {
   Clear: ["Go for a walk", "Have a picnic", "Stargazing"],
@@ -33,9 +35,26 @@ const SearchBar = () => {
     }
   };
 
-  const addFavorite = () => {
-    if (data.name && !favorites.some((fav) => fav.name === data.name)) {
-      setFavorites([...favorites, data]);
+//   const addFavorite = () => {
+//     if (data.name && !favorites.some((fav) => fav.name === data.name)) {
+//       setFavorites([...favorites, data]);
+//     }
+//   };
+
+  const addFavorite = async () => {
+    try {
+      if (data.name && !favorites.some((fav) => fav.name === data.name)) {
+        // Add to local state
+        setFavorites([...favorites, data]);
+  
+        // Save to Firestore
+        const favoritesRef = collection(db, 'favorites'); 
+        await addDoc(favoritesRef, data);
+  
+        console.log('Favorite added to Firestore!');
+      }
+    } catch (error) {
+      console.error('Error adding favorite to Firestore:', error);
     }
   };
 

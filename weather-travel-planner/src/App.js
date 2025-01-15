@@ -7,6 +7,7 @@ import SignUp from "./pages/SignUp";
 import SearchBar from "./components/SearchBar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NavBar from "./components/NavBar";
+import FavoritesPage from "./components/FavoritesPage";
 
 
 
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
         <Route
           path="/searchbar"
           element={
