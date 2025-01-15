@@ -39,7 +39,7 @@ const Navbar = () => {
 
   return (
     <nav style={styles.navbar}>
-      <Link to="/" style={styles.logo}>🌦️ Weather Planner</Link>
+      <Link to="/" style={styles.logo}>🌦️ Weather-based travel Planner</Link>
       <ul style={styles.menu}>
         <li style={styles.menuItem}>
           <Link
