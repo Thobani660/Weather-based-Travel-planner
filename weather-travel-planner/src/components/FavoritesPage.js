@@ -28,8 +28,10 @@ const FavoritesPage = () => {
           favorites.map((fav, index) => (
             <li key={index}>
               <p>Name: {fav.name}</p>
-              <p>Description: {fav.description}</p> {/* Adjust fields as per your data */}
-              {/* Add more fields as needed */}
+              {/* <p>Temperature: {fav.}</p> */}
+              <p>Description: {fav.weather.description}</p>
+              <p>Wind: {fav.wind.speed}</p>
+              <p>Degrees: {fav.wind.deg}</p>
             </li>
           ))
         ) : (
