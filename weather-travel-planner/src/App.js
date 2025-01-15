@@ -8,7 +8,8 @@ import SearchBar from "./components/SearchBar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NavBar from "./components/NavBar";
 import FavoritesPage from "./components/FavoritesPage";
-// import ProfilePage from "./pages/ProfilePage";
+import ProfilePage from "./pages/ProfilePage";
+import TodoList from './pages/AddToDo'
 
 
 
@@ -21,7 +22,8 @@ const App = () => {
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/SignUp" element={<Register />} />
         <Route path="/favorites" element={<FavoritesPage />} />
-        {/* <Route path="/profile" element={<ProfilePage />} /> */}
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/toDo" element={<TodoList />} />
 
     
         

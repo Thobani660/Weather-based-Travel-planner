@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { db } from "../firebase";
 import { collection, addDoc } from 'firebase/firestore';
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const activitiesByWeather = {
   Clear: ["Go for a walk", "Have a picnic", "Stargazing"],
@@ -17,6 +19,8 @@ const SearchBar = () => {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
   const [favorites, setFavorites] = useState([]);
+  const navigate = useNavigate();
+
 
   const searchLocation = async (city) => {
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=0d60273acd621b755f1317978b6f426a`;
@@ -56,6 +60,10 @@ const SearchBar = () => {
     } catch (error) {
       console.error('Error adding favorite to Firestore:', error);
     }
+  };
+
+  const addToDo = async () => {
+       navigate("./toDo")
   };
 
   return (
@@ -151,21 +159,38 @@ const SearchBar = () => {
             <p>Wind Speed</p>
           </div>
         </div>
-        <button
-          onClick={addFavorite}
-          style={{
-            marginTop: "20px",
-            padding: "10px 20px",
-            fontSize: "16px",
-            color: "#fff",
-            backgroundColor: "#0072ff",
-            border: "none",
-            borderRadius: "20px",
-            cursor: "pointer",
-          }}
-        >
-          Save as Favorite
-        </button>
+        <div style={{ display: 'flex', gap: '50px' }}>
+  <button
+    onClick={addFavorite}
+    style={{
+      padding: "10px 20px",
+      fontSize: "16px",
+      color: "#fff",
+      backgroundColor: "#0072ff",
+      border: "none",
+      borderRadius: "20px",
+      cursor: "pointer",
+    }}
+  >
+    Save as Favorite
+  </button>
+
+  <button
+    onClick={addToDo}
+    style={{
+      padding: "10px 20px",
+      fontSize: "16px",
+      color: "#fff",
+      backgroundColor: "#0072ff",
+      border: "none",
+      borderRadius: "20px",
+      cursor: "pointer",
+    }}
+  >
+    Add ToDo
+  </button>
+</div>
+
       </div>
 
       {/* Favorite Locations */}
