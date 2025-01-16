@@ -35,7 +35,7 @@ export default function Register() {
       await setDoc(doc(db, "users", user.uid), userData);
 
       // Redirect the user to the login page after successful registration
-      navigate("/SignIn");
+      navigate("/signIn");
     } catch (err) {
       setError(err.message); // Display Firebase authentication error
     } finally {
@@ -44,7 +44,7 @@ export default function Register() {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#fff" }}>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#003366b2" }}>
       <div style={{ maxWidth: "600px", padding: "32px", backgroundColor: "#fff", boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", borderRadius: "8px", marginTop: "20px", marginBottom: "20px" }}>
         <h1 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px", textAlign: "center", color: "#93c8e8" }}>Sign Up</h1>
 
@@ -162,7 +162,7 @@ export default function Register() {
           <p style={{ marginTop: "16px", textAlign: "center" }}>
             Already have an account?{" "}
             <button
-              onClick={() => navigate("/signin")}
+              onClick={() => navigate("/signIn")}
               style={{ color: "#3b82f6", textDecoration: "underline", background: "none", border: "none", cursor: "pointer" }}
             >
               Click here

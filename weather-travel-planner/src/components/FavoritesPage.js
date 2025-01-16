@@ -9,6 +9,16 @@ const FavoritesPage = () => {
   const [newTask, setNewTask] = useState('');
   const [editTask, setEditTask] = useState({});
 
+  // Weather-based activity suggestions
+  const weatherActivities = {
+    sunny: ['Go for a walk', 'Visit a park', 'Go for a bike ride', 'Outdoor picnic'],
+    rainy: ['Watch a movie', 'Visit a museum', 'Indoor games', 'Read a book'],
+    cloudy: ['Go for a walk', 'Photography', 'Explore a cafe'],
+    snowy: ['Skiing', 'Build a snowman', 'Go snowboarding', 'Ice skating'],
+    windy: ['Fly a kite', 'Go sailing', 'Take a scenic drive'],
+    stormy: ['Stay indoors', 'Watch the storm', 'Read or listen to music'],
+  };
+
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
@@ -86,6 +96,16 @@ const FavoritesPage = () => {
     }
   };
 
+  const handleDeleteFavorite = async (favoriteId) => {
+    try {
+      const favoriteRef = doc(db, 'favorites', favoriteId);
+      await deleteDoc(favoriteRef);
+      setFavorites((prevFavorites) => prevFavorites.filter((fav) => fav.id !== favoriteId));
+    } catch (error) {
+      console.error('Error deleting favorite:', error);
+    }
+  };
+
   const toggleFormVisibility = (favoriteId, visible) => {
     setFormVisibility((prev) => ({
       ...prev,
@@ -93,16 +113,14 @@ const FavoritesPage = () => {
     }));
   };
 
+  const getActivitiesForWeather = (weather) => {
+    // Return a list of activities based on the weather condition
+    return weatherActivities[weather] || [];
+  };
+
   return (
-    <div style={{ position: 'relative', padding: '20px' }}>
-      <h2
-        style={{
-          textAlign: 'center',
-          marginBottom: '20px',
-        }}
-      >
-        Your Favorites
-      </h2>
+    <div style={{ position: 'relative', padding: '20px', marginTop: '50px', backgroundColor: '#003366b2' }}>
+      <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Your Favorites</h2>
       {favorites.length > 0 ? (
         <ul
           style={{
@@ -136,10 +154,17 @@ const FavoritesPage = () => {
                   <p>
                     Wind: {fav.wind?.speed || 'N/A'} m/s, {fav.wind?.deg || 'N/A'}°
                   </p>
+                  <div>
+                    <h5>Possible Activities:</h5>
+                    <ul style={{ paddingLeft: '20px' }}>
+                      {getActivitiesForWeather(fav.weather?.[0]?.main.toLowerCase()).map((activity, index) => (
+                        <li key={index}>{activity}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
                 <div>
-                  <h5>To-Do List:</h5>
-
+                  <h5>Activities List:</h5>
                   <div style={{ marginBottom: '10px' }}>
                     <input
                       type="text"
@@ -163,7 +188,7 @@ const FavoritesPage = () => {
                         border: 'none',
                       }}
                     >
-                      Add ToDo
+                      Add ToDos
                     </button>
                   </div>
 
@@ -236,6 +261,20 @@ const FavoritesPage = () => {
                   </ul>
                 </div>
               </div>
+              <button
+                onClick={() => handleDeleteFavorite(fav.id)}
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  backgroundColor: 'red',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '5px',
+                  marginTop: '10px',
+                }}
+              >
+                Delete Favorite
+              </button>
             </li>
           ))}
         </ul>

@@ -9,7 +9,7 @@ body {
   background-size: cover;   /* Ensures the image covers the entire viewport */
   background-position: center center;  /* Centers the image */
   background-repeat: no-repeat;  /* Prevents image from repeating */
-  margin: 0;  /* Remove default margin */
+  background-attachment: fixed; /* Keeps the background fixed */
   height: 100vh;
 }
 

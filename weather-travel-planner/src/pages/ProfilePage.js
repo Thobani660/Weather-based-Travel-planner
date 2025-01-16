@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase'; // Import your Firebase setup
 import { doc, getDoc } from 'firebase/firestore'; // Firestore methods
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import FavoritesPage from '../components/FavoritesPage';
+import Calendar from 'react-calendar'; // Import the calendar package
+import 'react-calendar/dist/Calendar.css'; // Import calendar styles
 
 const ProfileUser = () => {
   const [profileData, setProfileData] = useState(null);
@@ -9,7 +12,12 @@ const ProfileUser = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [updates, setUpdates] = useState({});
   const userId = auth.currentUser?.uid; // Get current user's UID
-  const [activeTab, setActiveTab] = useState('favourites'); 
+  const [activeTab, setActiveTab] = useState('favourites');
+  const [selectedDates, setSelectedDates] = useState([]); // To store selected dates from the calendar
+  const [showTodoList, setShowTodoList] = useState(false); // Manage whether to show the todo list or not
+  const [needsList, setNeedsList] = useState([]); // To store needs
+  const [wantsList, setWantsList] = useState([]); // To store wants
+  const navigate = useNavigate(); // Initialize navigate for redirection
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -32,11 +40,6 @@ const ProfileUser = () => {
     fetchProfile();
   }, [userId]);
 
-  // Render loading state while fetching profile data
-  if (profileData === null) {
-    // return <div>Loading profile...</div>; // Handle the loading state
-  }
-
   // Handle file upload
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -50,6 +53,36 @@ const ProfileUser = () => {
   // Handle update change
   const handleUpdateChange = (e) => {
     setUpdates({ ...updates, [e.target.name]: e.target.value });
+  };
+
+  // Log off function
+  const handleLogOff = async () => {
+    try {
+      await auth.signOut(); // Log out the user
+      navigate('/'); // Redirect to homepage
+    } catch (error) {
+      console.error('Error logging off:', error);
+    }
+  };
+
+  // Handle adding new to-do items
+  const handleAddItem = (type, item) => {
+    if (item.trim()) {
+      if (type === 'needs') {
+        setNeedsList([...needsList, item]);
+      } else {
+        setWantsList([...wantsList, item]);
+      }
+    }
+  };
+
+  // Handle deleting a to-do item
+  const handleDeleteItem = (type, index) => {
+    if (type === 'needs') {
+      setNeedsList(needsList.filter((_, i) => i !== index));
+    } else {
+      setWantsList(wantsList.filter((_, i) => i !== index));
+    }
   };
 
   const buttonStyle = {
@@ -69,15 +102,68 @@ const ProfileUser = () => {
     color: '#4b5563',
   };
 
+  // Handle the date selection
+  const handleDateChange = (dates) => {
+    setSelectedDates(dates); // Store the selected dates
+  };
+
+  // Update activeTab and hide the calendar when switching tabs
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    if (tab !== 'calendar') {
+      setSelectedDates([]); // Clear selected dates when calendar tab is not active
+    }
+  };
+
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '20px' }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        marginTop: '70px',
+        backgroundColor:"#003366b2"
+      }}
+    >
       {/* Profile Image */}
-      <div style={{ position: 'relative', marginBottom: '20px', textAlign: 'center' }}>
-        <div style={{ width: '150px', height: '150px', borderRadius: '50%', overflow: 'hidden', border: '4px solid #3b82f6', backgroundColor: 'white' }}>
+      <div
+        style={{
+          position: 'relative',
+          marginBottom: '20px',
+          textAlign: 'center',
+        }}
+      >
+        <div
+          style={{
+            width: '150px',
+            height: '150px',
+            borderRadius: '50%',
+            overflow: 'hidden',
+            border: '4px solid #3b82f6',
+            backgroundColor: 'white',
+          }}
+        >
           {image ? (
-            <img src={image} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img
+              src={image}
+              alt="Profile"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            />
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#6b7280' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+                color: '#6b7280',
+              }}
+            >
               Upload Image
             </div>
           )}
@@ -121,8 +207,15 @@ const ProfileUser = () => {
         <p>{profileData?.email || 'Email not available'}</p>
       </div>
 
-      {/* Edit Button */}
-      <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', marginBottom: '20px' }}>
+      {/* Edit and Log Off Buttons */}
+      <div
+        style={{
+          display: 'flex',
+          gap: '15px',
+          justifyContent: 'center',
+          marginBottom: '20px',
+        }}
+      >
         <button
           style={{
             backgroundColor: '#ef4444',
@@ -149,6 +242,20 @@ const ProfileUser = () => {
           onClick={() => setIsEditing(!isEditing)}
         >
           {isEditing ? 'Cancel' : 'Update'}
+        </button>
+
+        <button
+          style={{
+            backgroundColor: '#10b981',
+            color: 'white',
+            padding: '8px 16px',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            transition: 'background-color 0.3s',
+          }}
+          onClick={handleLogOff}
+        >
+          Log Off
         </button>
       </div>
 
@@ -184,71 +291,90 @@ const ProfileUser = () => {
         </div>
       )}
 
-      <main style={{ padding: '24px', display: 'flex', justifyContent: 'center' }}>
-        <div style={{ maxWidth: '1200px', width: '100%', padding: '24px' }}>
-          {/* Tabs Section */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '16px',
-              marginBottom: '16px',
-            }}
-          >
-            <button
-              style={{
-                ...buttonStyle,
-                ...(activeTab === 'favourites' ? activeButtonStyle : inactiveButtonStyle),
-              }}
-              onClick={() => setActiveTab('favourites')}
-            >
-              Favourite
-            </button>
-            <button
-              style={{
-                ...buttonStyle,
-                ...(activeTab === 'bookingHistory' ? activeButtonStyle : inactiveButtonStyle),
-              }}
-              onClick={() => setActiveTab('bookingHistory')}
-            >
-              Booking History
-            </button>
-            <button
-              style={{
-                ...buttonStyle,
-                ...(activeTab === 'booked' ? activeButtonStyle : inactiveButtonStyle),
-              }}
-              onClick={() => setActiveTab('booked')}
-            >
-              Booked
-            </button>
-          </div>
-
-          {/* Content Section */}
-          <div
-            style={{
-              padding: '24px',
-              borderRadius: '8px',
-              backgroundColor: 'white',
-              minHeight: '200px',
-              border: '1px solid #e5e7eb',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'column',
-            }}
-          >
-            {activeTab === 'favourites' && (
-              <div style={{ width: '100%', maxWidth: '1000px' }}>
-                <FavoritesPage />
-              </div>
-            )}
-            {/* {activeTab === 'bookingHistory' && <BookingHistory />} */}
-            {/* {activeTab === 'booked' && <Booked />} */}
-          </div>
-        </div>
+      {/* Tabs Section */}
+      <main
+        style={{
+          display: 'flex',
+          gap: '20px',
+          marginBottom: '30px',
+        }}
+      >
+        <button
+          style={{
+            ...buttonStyle,
+            ...activeTab === 'favourites' ? activeButtonStyle : inactiveButtonStyle,
+          }}
+          onClick={() => handleTabChange('favourites')}
+        >
+          Favourites
+        </button>
+        <button
+          style={{
+            ...buttonStyle,
+            ...activeTab === 'needs' ? activeButtonStyle : inactiveButtonStyle,
+          }}
+          onClick={() => handleTabChange('needs')}
+        >
+          Needs & Wants
+        </button>
+        <button
+          style={{
+            ...buttonStyle,
+            ...activeTab === 'calendar' ? activeButtonStyle : inactiveButtonStyle,
+          }}
+          onClick={() => handleTabChange('calendar')}
+        >
+          Calendar
+        </button>
       </main>
+
+      {/* Tab Content */}
+      {activeTab === 'favourites' && <FavoritesPage />}
+      {activeTab === 'needs' && (
+        <div>
+          <h3>My Needs</h3>
+          {/* Needs List */}
+          <div>
+            {needsList.map((item, index) => (
+              <div key={index} style={{ display: 'flex', gap: '8px' }}>
+                <span>{item}</span>
+                <button onClick={() => handleDeleteItem('needs', index)}>Delete</button>
+              </div>
+            ))}
+          </div>
+          {/* Add Need */}
+          <input
+            type="text"
+            placeholder="Add a new need"
+            onKeyPress={(e) => e.key === 'Enter' && handleAddItem('needs', e.target.value)}
+          />
+          <h3>My Wants</h3>
+          {/* Wants List */}
+          <div>
+            {wantsList.map((item, index) => (
+              <div key={index} style={{ display: 'flex', gap: '8px' }}>
+                <span>{item}</span>
+                <button onClick={() => handleDeleteItem('wants', index)}>Delete</button>
+              </div>
+            ))}
+          </div>
+          {/* Add Want */}
+          <input
+            type="text"
+            placeholder="Add a new want"
+            onKeyPress={(e) => e.key === 'Enter' && handleAddItem('wants', e.target.value)}
+          />
+        </div>
+      )}
+
+      {activeTab === 'calendar' && (
+        <div>
+          <Calendar
+            onChange={handleDateChange}
+            value={selectedDates}
+          />
+        </div>
+      )}
     </div>
   );
 };

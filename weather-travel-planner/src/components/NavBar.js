@@ -4,12 +4,17 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const styles = {
     navbar: {
-      backgroundColor: "#4CAF50",
-      padding: "10px 20px",
+      backgroundColor: "#003366", // Baby blue color
+      padding: "20px 20px",
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+      position: "fixed", // Fix the navbar at the top of the page
+      top: "0",
+      left: "0",
+      width: "100%",
+      zIndex: "1000", // Ensure it's on top of other content
     },
     logo: {
       fontSize: "24px",
@@ -20,11 +25,11 @@ const Navbar = () => {
     menu: {
       display: "flex",
       listStyleType: "none",
-      margin: 0,
+      margin:" 0  30px",
       padding: 0,
     },
     menuItem: {
-      margin: "0 15px",
+      margin: "0 30px",
     },
     menuLink: {
       color: "#fff",
@@ -39,7 +44,7 @@ const Navbar = () => {
 
   return (
     <nav style={styles.navbar}>
-      <Link to="/" style={styles.logo}>🌦️ Weather-based travel Planner</Link>
+      <Link to="/" style={styles.logo}>🌦️Phila's Weather-based travel Planner</Link>
       <ul style={styles.menu}>
         <li style={styles.menuItem}>
           <Link

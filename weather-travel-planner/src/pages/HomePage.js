@@ -6,58 +6,85 @@ const HomePage = () => {
     container: {
       textAlign: "center",
       padding: "50px 20px",
-      backgroundImage: 'url("../../res/Weather-Proof-Your-Travel-Plans-featured.webp)', // Replace with your image URL
+      backgroundImage: 'url("../../res/Weather-Proof-Your-Travel-Plans-featured.webp")', // Replace with your image URL
       backgroundSize: 'cover', // Ensures the image covers the entire container
       backgroundPosition: 'center', // Centers the image
-      backgroundRepeate: 'no-repeate',
-      height: '100vh', // Makes sure the background covers the entire viewport height
+      backgroundRepeat: 'no-repeat',
+      height: '100vh', // Ensures the background covers the entire viewport height
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: '#fff', // Ensure text is readable
+      backgroundAttachment: 'fixed', // Adds a nice effect to background when scrolling
     },
     heading: {
       fontSize: "3rem",
-      color: "#4CAF50",
+      color: "#fff",
       fontWeight: "700",
       marginBottom: "20px",
-      backgroundColor:"transparent",
-      width: "550px",
-      marginLeft:"385px",
-      padding:"20px",
-      borderRadius:"20px"
+      backgroundColor: "rgba(0, 0, 0, 0.151)", // Semi-transparent background for better readability
+      width: "80%",
+      maxWidth: "600px",
+      padding: "20px",
+      borderRadius: "10px",
+      marginTop:"-750px",
+      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.6)", // Adds text shadow for better readability
     },
     subHeading: {
       fontSize: "1.5rem",
-      color: "#777",
+      color: "black",
       marginBottom: "30px",
-      marginLeft:"35px"
+      maxWidth: "700px",
+      margin: "0 auto", // Centers the subheading
+      fontStyle: "italic",
+      backgroundColor: "rgba(0, 0, 0, 0.151)",
+      padding: "10px",
+      borderRadius: "8px",
     },
     linksContainer: {
       marginTop: "40px",
+      display: 'flex',
+      justifyContent: 'center',
+      gap: '20px', // Space between links
+      marginBottom:"-550px",
     },
     link: {
       fontSize: "18px",
       color: "#fff",
-      padding: "10px 25px",
+      padding: "15px 30px",
       textDecoration: "none",
       borderRadius: "30px",
-      margin: "10px",
       backgroundColor: "#4CAF50",
-      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-      transition: "all 0.3s ease",
+      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+      transition: "transform 0.3s ease, background-color 0.3s ease",
+      fontWeight: '600',
     },
     linkHover: {
       backgroundColor: "#45a049",
       transform: "scale(1.05)",
     },
     footer: {
-      marginTop: "200px",
+      marginTop: "auto", // Ensures the footer sticks to the bottom of the page
       fontSize: "14px",
-      color: "yellow",
-      backgroundColor: 'black',
-      height:'150px',
-      width:"1400px"
+      color: "#fff",
+      height:"300px",
+      backgroundColor: '#003366', // Footer background color
+      padding: '20px 0',
+      textAlign: 'center',
+      width: '100%', // Full width
+      position: 'relative', // To ensure it spans the full width
+      marginTop:"-200px"
+    },
+    footerText: {
+      fontSize: "1rem",
+      fontStyle: "italic",
+      color: "#ddd",
     },
   };
 
   return (
+   <>
     <div style={styles.container}>
       <h1 style={styles.heading}>Weather-Based Travel Planner</h1>
       <p style={styles.subHeading}>Plan your next adventure with real-time weather insights</p>
@@ -80,13 +107,12 @@ const HomePage = () => {
           Sign Up
         </Link>
       </div>
-
-      {/* Add other components like SearchBar, WeatherCard, etc. */}
-
-      <div style={styles.footer}>
-        <p>&copy; 2025-Thobani Zondi ft Thobeka Bovana Weather-Based Travel Planner. All rights reserved.</p>
-      </div>
     </div>
+
+    <div style={styles.footer}>
+      <p style={styles.footerText}>&copy; 2025-Thobani Zondi ft Thobeka Bovana Weather-Based Travel Planner. All rights reserved.</p>
+    </div>
+   </>
   );
 };
 
