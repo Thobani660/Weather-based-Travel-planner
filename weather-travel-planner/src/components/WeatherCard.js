@@ -7,8 +7,7 @@ const Weather = () => {
   const [error, setError] = useState(null);
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
-
-  const apiKey = '02deab10a7e6c992f803cb27121f0563'; // Your OpenWeatherMap API key
+  const apiKey = '02deab10a7e6c992f803cb27121f0563'; 
 
   // Function to fetch the weather data
   const fetchWeatherData = async () => {
@@ -41,7 +40,7 @@ const Weather = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (location) {
-      fetchWeatherData(); // This is the function that fetches the weather data
+      fetchWeatherData(); 
     }
   };
 

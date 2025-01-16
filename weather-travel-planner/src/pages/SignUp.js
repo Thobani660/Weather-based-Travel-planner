@@ -19,25 +19,23 @@ export default function Register() {
     setLoading(true);
 
     try {
-      // Firebase Authentication for user sign-up
+      
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      // After Firebase sign-up, store additional user information in Firestore
       const userData = {
         name,
         surname,
         email,
-        uid: user.uid, // Firebase user ID
+        uid: user.uid, 
       };
 
-      // Save user info to Firebase Firestore
+      
       await setDoc(doc(db, "users", user.uid), userData);
 
-      // Redirect the user to the login page after successful registration
+     
       navigate("/signIn");
     } catch (err) {
-      setError(err.message); // Display Firebase authentication error
+      setError(err.message); 
     } finally {
       setLoading(false);
     }

@@ -1,35 +1,25 @@
 import React, { useState } from 'react';
 
 const TodoList = () => {
-  const [task, setTask] = useState(''); // To store the task input
-  const [todos, setTodos] = useState([]); // To store the list of tasks
-
+  const [task, setTask] = useState(''); 
+  const [todos, setTodos] = useState([]);
   const handleTaskChange = (event) => {
-    setTask(event.target.value); // Update the task input
+    setTask(event.target.value); 
   };
 
   const handleAddTask = (event) => {
     event.preventDefault();
     if (task) {
-      setTodos([...todos, task]); // Add the new task to the list
-      setTask(''); // Clear the task input after adding
+      setTodos([...todos, task]);
+      setTask(''); 
     }
   };
 
   const handleDeleteTask = (index) => {
-    const newTodos = todos.filter((_, i) => i !== index); // Remove the task by index
+    const newTodos = todos.filter((_, i) => i !== index); 
     setTodos(newTodos);
   };
 
-//   const activitiesByWeather = {
-//     Clear: ["Go for a walk", "Have a picnic", "Stargazing"],
-//     Clouds: ["Visit a museum", "Read a book", "Go to a café"],
-//     Rain: ["Watch a movie", "Play indoor games", "Do some cooking"],
-//     Snow: ["Build a snowman", "Go skiing", "Have hot cocoa"],
-//     Thunderstorm: ["Stay indoors", "Watch lightning from a safe spot", "Catch up on shows"],
-//     Drizzle: ["Take a short walk with an umbrella", "Visit a nearby café"],
-//     Mist: ["Go for a relaxing walk", "Take photos of the misty scenery"],
-//   };
 
   return (
     <div style={{ maxWidth: '600px', margin: '0 auto', padding: '24px' }}>
@@ -106,7 +96,6 @@ const TodoList = () => {
 const WeatherApp = () => {
   return (
     <div>
-      {/* Other weather app content here */}
       <h1>Weather App</h1>
 
       {/* To-Do List component */}

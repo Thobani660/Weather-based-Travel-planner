@@ -6,37 +6,37 @@ const HomePage = () => {
     container: {
       textAlign: "center",
       padding: "50px 20px",
-      backgroundImage: 'url("../../res/Weather-Proof-Your-Travel-Plans-featured.webp")', // Replace with your image URL
-      backgroundSize: 'cover', // Ensures the image covers the entire container
-      backgroundPosition: 'center', // Centers the image
+      backgroundImage: 'url("../../res/Weather-Proof-Your-Travel-Plans-featured.webp")', 
+      backgroundSize: 'cover',
+      backgroundPosition: 'center', 
       backgroundRepeat: 'no-repeat',
-      height: '100vh', // Ensures the background covers the entire viewport height
+      height: '100vh', 
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      color: '#fff', // Ensure text is readable
-      backgroundAttachment: 'fixed', // Adds a nice effect to background when scrolling
+      color: '#fff', 
+      backgroundAttachment: 'fixed', 
     },
     heading: {
       fontSize: "3rem",
       color: "#fff",
       fontWeight: "700",
       marginBottom: "20px",
-      backgroundColor: "rgba(0, 0, 0, 0.151)", // Semi-transparent background for better readability
+      backgroundColor: "rgba(0, 0, 0, 0.151)", 
       width: "80%",
       maxWidth: "600px",
       padding: "20px",
       borderRadius: "10px",
       marginTop:"-750px",
-      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.6)", // Adds text shadow for better readability
+      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.6)", 
     },
     subHeading: {
       fontSize: "1.5rem",
       color: "black",
       marginBottom: "30px",
       maxWidth: "700px",
-      margin: "0 auto", // Centers the subheading
+      margin: "0 auto", 
       fontStyle: "italic",
       backgroundColor: "rgba(0, 0, 0, 0.151)",
       padding: "10px",
@@ -46,7 +46,7 @@ const HomePage = () => {
       marginTop: "40px",
       display: 'flex',
       justifyContent: 'center',
-      gap: '20px', // Space between links
+      gap: '20px', 
       marginBottom:"-550px",
     },
     link: {
@@ -65,15 +65,15 @@ const HomePage = () => {
       transform: "scale(1.05)",
     },
     footer: {
-      marginTop: "auto", // Ensures the footer sticks to the bottom of the page
+      marginTop: "auto", 
       fontSize: "14px",
       color: "#fff",
       height:"300px",
-      backgroundColor: '#003366', // Footer background color
+      backgroundColor: '#003366', 
       padding: '20px 0',
       textAlign: 'center',
-      width: '100%', // Full width
-      position: 'relative', // To ensure it spans the full width
+      width: '100%', 
+      position: 'relative', 
       marginTop:"-200px"
     },
     footerText: {

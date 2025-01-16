@@ -1,39 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { auth, db } from '../firebase'; // Import your Firebase setup
-import { doc, getDoc } from 'firebase/firestore'; // Firestore methods
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { auth, db } from '../firebase'; 
+import { doc, getDoc } from 'firebase/firestore'; 
+import { useNavigate } from 'react-router-dom'; 
 import FavoritesPage from '../components/FavoritesPage';
-import Calendar from 'react-calendar'; // Import the calendar package
-import 'react-calendar/dist/Calendar.css'; // Import calendar styles
+import Calendar from 'react-calendar'; 
+import 'react-calendar/dist/Calendar.css';
 
 const ProfileUser = () => {
   const [profileData, setProfileData] = useState(null);
   const [image, setImage] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [updates, setUpdates] = useState({});
-  const userId = auth.currentUser?.uid; // Get current user's UID
+  const userId = auth.currentUser?.uid;
   const [activeTab, setActiveTab] = useState('favourites');
-  const [selectedDates, setSelectedDates] = useState([]); // To store selected dates from the calendar
-  const [showTodoList, setShowTodoList] = useState(false); // Manage whether to show the todo list or not
-  const [needsList, setNeedsList] = useState([]); // To store needs
-  const [wantsList, setWantsList] = useState([]); // To store wants
-  const navigate = useNavigate(); // Initialize navigate for redirection
-
+  const [selectedDates, setSelectedDates] = useState([]); 
+  const [showTodoList, setShowTodoList] = useState(false);
+  const [needsList, setNeedsList] = useState([]); 
+  const [wantsList, setWantsList] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProfile = async () => {
       if (userId) {
-        const profileDocRef = doc(db, 'Users', userId); // Get the user's document from Firestore
+        const profileDocRef = doc(db, 'Users', userId);
         const profileSnap = await getDoc(profileDocRef);
 
         if (profileSnap.exists()) {
-          setProfileData(profileSnap.data()); // Set profile data
+          setProfileData(profileSnap.data()); 
         } else {
           console.log('No profile data found for this user');
-          setProfileData(null); // In case there's no profile data
+          setProfileData(null); 
         }
       } else {
         console.log('User is not authenticated');
-        setProfileData(null); // Handle case where user is not logged in
+        setProfileData(null); 
       }
     };
 
@@ -58,8 +57,8 @@ const ProfileUser = () => {
   // Log off function
   const handleLogOff = async () => {
     try {
-      await auth.signOut(); // Log out the user
-      navigate('/'); // Redirect to homepage
+      await auth.signOut(); 
+      navigate('/'); 
     } catch (error) {
       console.error('Error logging off:', error);
     }
@@ -104,14 +103,13 @@ const ProfileUser = () => {
 
   // Handle the date selection
   const handleDateChange = (dates) => {
-    setSelectedDates(dates); // Store the selected dates
+    setSelectedDates(dates); 
   };
 
-  // Update activeTab and hide the calendar when switching tabs
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     if (tab !== 'calendar') {
-      setSelectedDates([]); // Clear selected dates when calendar tab is not active
+      setSelectedDates([]); 
     }
   };
 

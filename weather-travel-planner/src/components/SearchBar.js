@@ -8,7 +8,6 @@ const SearchBar = () => {
   const [location, setLocation] = useState("");
   const [favorites, setFavorites] = useState([]);
 
-  // Fetch weather data by city name or coordinates
   const fetchWeather = async (url) => {
     try {
       const response = await axios.get(url);
@@ -24,13 +23,12 @@ const SearchBar = () => {
     fetchWeather(url);
   };
 
-  // Get weather by coordinates
+  // coordinates
   const getWeatherByCoordinates = (lat, lon) => {
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=0d60273acd621b755f1317978b6f426a`;
     fetchWeather(url);
   };
 
-  // Handle user input
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       searchLocation(location);
@@ -38,7 +36,6 @@ const SearchBar = () => {
     }
   };
 
-  // Fetch user's current location weather on mount
   useEffect(() => {
     const fetchCurrentLocationWeather = () => {
       if (navigator.geolocation) {
@@ -63,16 +60,9 @@ const SearchBar = () => {
   const addFavorite = async () => {
     try {
       if (data.name && !favorites.some((fav) => fav.name === data.name)) {
-        // Get suggested activities
         const activities = getSuggestedActivities();
-
-        // Combine weather data and suggested activities
         const favoriteData = { ...data, activities };
-
-        // Add to local state
         setFavorites([...favorites, favoriteData]);
-
-        // Save to Firestore
         const favoritesRef = collection(db, "favorites");
         await addDoc(favoritesRef, favoriteData);
 
@@ -83,11 +73,12 @@ const SearchBar = () => {
     }
   };
 
-  // Suggest activities based on weather conditions
+  
   const getSuggestedActivities = () => {
     if (!data.weather || !data.main) return [];
 
-    const temp = data.main.temp - 273.15; // Convert from Kelvin to Celsius
+    const temp = data.main.temp - 273.15; //  Kelvin to Celsius
+
     const weatherDescription = data.weather[0]?.description?.toLowerCase();
     let activities = [];
 
@@ -132,7 +123,7 @@ const SearchBar = () => {
       {/* Container for search bar and weather data */}
       <div
         style={{
-          backgroundColor: "#003366b2", // Blue color for the container
+          backgroundColor: "#003366b2", 
           borderRadius: "20px",
           padding: "40px",
           boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)",

@@ -4,17 +4,17 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const styles = {
     navbar: {
-      backgroundColor: "#003366", // Baby blue color
+      backgroundColor: "#003366", 
       padding: "20px 20px",
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-      position: "fixed", // Fix the navbar at the top of the page
+      position: "fixed",
       top: "0",
       left: "0",
       width: "100%",
-      zIndex: "1000", // Ensure it's on top of other content
+      zIndex: "1000", 
     },
     logo: {
       fontSize: "24px",

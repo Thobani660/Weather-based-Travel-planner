@@ -9,7 +9,6 @@ const FavoritesPage = () => {
   const [newTask, setNewTask] = useState('');
   const [editTask, setEditTask] = useState({});
 
-  // Weather-based activity suggestions
   const weatherActivities = {
     sunny: ['Go for a walk', 'Visit a park', 'Go for a bike ride', 'Outdoor picnic'],
     rainy: ['Watch a movie', 'Visit a museum', 'Indoor games', 'Read a book'],
@@ -57,16 +56,12 @@ const FavoritesPage = () => {
     if (!newTask.trim()) return;
 
     try {
-      // Save task to Firebase
       await addDoc(collection(db, 'todos'), {
         favoriteId,
         task: newTask,
       });
 
-      // Clear input after adding task
       setNewTask('');
-
-      // Fetch updated todos list
       fetchTodos(favoriteId);
     } catch (error) {
       console.error('Error adding task:', error);
@@ -114,7 +109,6 @@ const FavoritesPage = () => {
   };
 
   const getActivitiesForWeather = (weather) => {
-    // Return a list of activities based on the weather condition
     return weatherActivities[weather] || [];
   };
 

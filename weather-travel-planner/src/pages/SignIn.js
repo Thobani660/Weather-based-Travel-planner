@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { auth } from "../firebase"; // Import Firebase authentication
+import { auth } from "../firebase"; 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +12,7 @@ const SignIn = () => {
 
   useEffect(() => {
     if (auth.currentUser) {
-      navigate("/SignIn"); // Redirect to the dashboard if already logged in
+      navigate("/SignIn");
     }
   }, [navigate]);
 
@@ -22,11 +22,11 @@ const SignIn = () => {
     setError("");
 
     try {
-      // Attempt to sign in the user with email and password
+      
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/searchbar"); // Redirect after successful sign-in
+      navigate("/searchbar");
     } catch (err) {
-      // Handle errors and display a user-friendly message
+      
       setError("Failed to sign in. Please check your email and password.");
       console.error("SignIn Error:", err.message);
     } finally {
